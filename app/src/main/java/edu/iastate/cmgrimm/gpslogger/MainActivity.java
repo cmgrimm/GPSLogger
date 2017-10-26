@@ -12,72 +12,99 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private String time;
     private Location currentLocation;
-
+    private ArrayList<Coordinates> coordinates;
+    private boolean logLocation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        coordinates = new ArrayList<Coordinates>();
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                currentLocation = location;
+
+                TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+                timeTextView.setText("uh oh");
+
+                if(logLocation){
+
+                    Date date = new Date();
+                    String time = date.getTime() + (System.currentTimeMillis() & 1000) + "";
+
+                    //store location as Coordinates
+                    Coordinates newCoords = new Coordinates(location.getLatitude(), location.getLongitude(), time);
+
+                    //update text views
+                    TextView latTextView = (TextView) findViewById(R.id.latTextView);
+                    TextView longTextView = (TextView) findViewById(R.id.longTextView);
+                        //TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+                    latTextView.setText(newCoords.getLatitude()+"");
+                    longTextView.setText(newCoords.getLongitude()+"");
+                    timeTextView.setText("yay?");
+
+                    //add new coordinates to array list
+                    coordinates.add(newCoords);
+
+
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        };//end location listener
         Button ioBtn = (Button) findViewById(R.id.ioBtn);
         ioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
 
-                //get Your Current Location
-                locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                locationListener = new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        currentLocation = location;
-                        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                        Date date = new Date();
-                        dateFormat.format(date);
+                if(logLocation) {
+                    logLocation = false;
+                    timeTextView.setText("unclicked");
 
-                        //update location displayed in app
-                        TextView latTextView = (TextView) findViewById(R.id.latTextView);
-                        TextView longTextVIew = (TextView) findViewById(R.id.longTextView);
-                        TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+                    //upload data
+                    sendData();
 
-                        latTextView.setText(currentLocation.getLatitude()+"");
-                        longTextVIew.setText(currentLocation.getLongitude() + "");
-                        timeTextView.setText(date + "" + (System.currentTimeMillis() % 1000));
-                    }
+                    //reset data
+                    coordinates = new ArrayList<Coordinates>();
 
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                } else {
+                    logLocation = true;
+                    timeTextView.setText("clicked");
+                }
 
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                };
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }//end onClick
+        });//end onclickListener
 
 
+    }//end on create
 
-            }
-        });
-
+    private void sendData(){
+        //TODO upload data to cloud
     }
-}
+
+
+}//end main activity
