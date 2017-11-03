@@ -1,6 +1,7 @@
 package edu.iastate.cmgrimm.gpslogger;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,7 +17,10 @@ import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,13 +47,9 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 currentLocation = location;
 
-                TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
-                timeTextView.setText("uh oh");
-
                 if(logLocation){
                     //TODO capture accelerometer data
-                    Date date = new Date();
-                    String time = date.getTime() + (System.currentTimeMillis() & 1000) + "";
+                    String time = getCurrentTime() + ":" + (System.currentTimeMillis() & 1000) + "";
 
                     //store location as Coordinates
                     Coordinates newCoords = new Coordinates(location.getLatitude(), location.getLongitude(), time);
@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
                     //update text views
                     TextView latTextView = (TextView) findViewById(R.id.latTextView);
                     TextView longTextView = (TextView) findViewById(R.id.longTextView);
-                        //TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
+                    TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
                     latTextView.setText(newCoords.getLatitude()+"");
                     longTextView.setText(newCoords.getLongitude()+"");
-                    timeTextView.setText("yay?");
+                    timeTextView.setText(time);
 
                     //add new coordinates to array list
                     coordinates.add(new String[] {time, newCoords.getLatitude()+"", newCoords.getLongitude()+""});
@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
             }
         };//end location listener
 
+
+        //ensure permissions have been accepted
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -94,29 +96,41 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 1, locationListener);
+        // Define where the location will be pulled from
+        final String locationProvider = LocationManager.GPS_PROVIDER;
+
 
         Button ioBtn = (Button) findViewById(R.id.ioBtn);
         ioBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
 
                 if(logLocation) {
                     logLocation = false;
-                    timeTextView.setText("unclicked");
+
+                    //stop updating location
+                    locationManager.removeUpdates(locationListener);
 
                     //upload data
                     sendData(coordinates);
+
+                    //change button color
+                    Button ioBtn = (Button) findViewById(R.id.ioBtn);
+                    ioBtn.setBackgroundColor(Color.RED);
 
                     //reset data
                     coordinates = new ArrayList<String[]>();
 
                 } else {
                     logLocation = true;
-                    timeTextView.setText("clicked");
+
+                    //change button color
+                    Button ioBtn = (Button) findViewById(R.id.ioBtn);
+                    ioBtn.setBackgroundColor(Color.GREEN);
+
+                    // Register the listener with the Location Manager to receive location updates
+                    locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
                 }
 
             }//end onClick
@@ -125,13 +139,19 @@ public class MainActivity extends AppCompatActivity {
 
     }//end on create
 
+    public static String getCurrentTime() {
+        //date output format
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        return dateFormat.format(cal.getTime());
+    }// end getCurrentTime()
+
     public void sendData(List<String []> data){
         Date date = new Date();
         String time = date.getTime()+ "";
 
-        String csv = android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+'\\'+time;
-
         try {
+            String csv = android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+'/'+time;
             CSVWriter writer = new CSVWriter(new FileWriter(csv));
             String [] headers = "Time#Latitude#Longitude".split("#");
             writer.writeNext(headers);
