@@ -1,7 +1,15 @@
 package edu.iastate.cmgrimm.gpslogger;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.SurfaceTexture;
+import android.hardware.camera2.CameraCaptureSession;
+import android.hardware.camera2.CameraDevice;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CaptureRequest;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -9,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,7 +33,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
@@ -34,10 +42,14 @@ public class MainActivity extends AppCompatActivity {
     List<String[]> coordinates;
     private boolean logLocation = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         coordinates = new ArrayList<String[]>();
 
@@ -47,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 currentLocation = location;
 
-                if(logLocation){
+                if (logLocation) {
                     //TODO capture accelerometer data
                     String time = getCurrentTime() + ":" + (System.currentTimeMillis() & 1000) + "";
 
@@ -58,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
                     TextView latTextView = (TextView) findViewById(R.id.latTextView);
                     TextView longTextView = (TextView) findViewById(R.id.longTextView);
                     TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
-                    latTextView.setText(newCoords.getLatitude()+"");
-                    longTextView.setText(newCoords.getLongitude()+"");
+                    latTextView.setText(newCoords.getLatitude() + "");
+                    longTextView.setText(newCoords.getLongitude() + "");
                     timeTextView.setText(time);
 
                     //add new coordinates to array list
-                    coordinates.add(new String[] {time, newCoords.getLatitude()+"", newCoords.getLongitude()+""});
+                    coordinates.add(new String[]{time, newCoords.getLatitude() + "", newCoords.getLongitude() + ""});
 
 
                 } // end if
@@ -102,11 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button ioBtn = (Button) findViewById(R.id.ioBtn);
         ioBtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onClick(View view) {
 
 
-                if(logLocation) {
+                if (logLocation) {
                     logLocation = false;
 
                     //stop updating location
@@ -129,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     Button ioBtn = (Button) findViewById(R.id.ioBtn);
                     ioBtn.setBackgroundColor(Color.GREEN);
 
-                    // Register the listener with the Location Manager to receive location updates
+
                     locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
                 }
 
@@ -163,10 +176,5 @@ public class MainActivity extends AppCompatActivity {
 
     }//end sendData
 
-    private void takePicture() {
-        //TODO take a picture; if using video just extract frame
-        //TODO add 2min video? when something strange happens
-        //TODO face and front camera?  Create two different camera objects
-    }
 
 }//end main activity
