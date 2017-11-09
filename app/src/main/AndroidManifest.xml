@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -16,6 +17,8 @@
         android:required="true" />
     <uses-feature android:name="android.hardware.camera2.full" />
 
+=======
+>>>>>>> parent of 974185f... app now logs gps location
 =======
 >>>>>>> parent of 974185f... app now logs gps location
 =======
