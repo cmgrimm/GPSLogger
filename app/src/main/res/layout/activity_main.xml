@@ -101,4 +101,82 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+
+    <TextView
+        android:id="@+id/sdCardLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="188dp"
+        android:layout_marginStart="16dp"
+        android:text="SD Card:"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/sdCardTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-----"
+        app:layout_constraintStart_toEndOf="@+id/sdCardLabelTextView"
+        app:layout_constraintTop_toTopOf="@+id/sdCardLabelTextView" />
+
+    <TextView
+        android:id="@+id/slLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Storage Location:"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/internalStorageRemainingLabelTextView" />
+
+    <TextView
+        android:id="@+id/slTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-----"
+        app:layout_constraintBottom_toBottomOf="@+id/slLabelTextView"
+        app:layout_constraintStart_toEndOf="@+id/slLabelTextView" />
+
+    <TextView
+        android:id="@+id/sdStorageRemainingLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="SD Storage Remaining:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sdCardLabelTextView" />
+
+    <TextView
+        android:id="@+id/sdStorageRemainingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-----"
+        app:layout_constraintStart_toEndOf="@+id/sdStorageRemainingLabelTextView"
+        app:layout_constraintTop_toTopOf="@+id/sdStorageRemainingLabelTextView" />
+
+    <TextView
+        android:id="@+id/internalStorageRemainingLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Internal Storage Remaining:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sdStorageRemainingLabelTextView" />
+
+    <TextView
+        android:id="@+id/internalStorageRemainingTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-----"
+        app:layout_constraintStart_toEndOf="@+id/internalStorageRemainingLabelTextView"
+        app:layout_constraintTop_toTopOf="@+id/internalStorageRemainingLabelTextView" />
+
 </android.support.constraint.ConstraintLayout>

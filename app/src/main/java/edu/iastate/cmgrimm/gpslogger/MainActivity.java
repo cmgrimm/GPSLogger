@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Location currentLocation;
     List<String[]> coordinates;
     private boolean logLocation = false;
+    private SLocation storage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.camera_view, Camera2VideoFragment.newInstance())
                     .commit();
         }
+
+        storage = new SLocation();
+
+        TextView sdCardTextView = (TextView) findViewById(R.id.sdCardTextView);
+        TextView sdRemainingStorageTextView = (TextView) findViewById(R.id.sdStorageRemainingTextView);
+        TextView slTextView = (TextView) findViewById(R.id.slTextView);
+        TextView internalStorageRemainingTextView = (TextView) findViewById(R.id.internalStorageRemainingTextView);
+
+        sdCardTextView.setText(storage.getSdLocation());
+        sdRemainingStorageTextView.setText(storage.getSdRemainingStorage());
+        internalStorageRemainingTextView.setText(storage.getInternalRemainingStorage());
+        slTextView.setText(storage.getStorageLocation());
+
 
         coordinates = new ArrayList<String[]>();
 
