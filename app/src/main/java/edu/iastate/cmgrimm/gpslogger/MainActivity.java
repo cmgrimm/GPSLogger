@@ -55,8 +55,11 @@ public class MainActivity extends AppCompatActivity {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if (logLocation) {
 =======
+=======
+>>>>>>> parent of 974185f... app now logs gps location
 =======
 >>>>>>> parent of 974185f... app now logs gps location
                 TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     TextView longTextView = (TextView) findViewById(R.id.longTextView);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
                     latTextView.setText(newCoords.getLatitude() + "");
                     longTextView.setText(newCoords.getLongitude() + "");
@@ -83,11 +87,16 @@ public class MainActivity extends AppCompatActivity {
 =======
 =======
 >>>>>>> parent of 974185f... app now logs gps location
+=======
+>>>>>>> parent of 974185f... app now logs gps location
                         //TextView timeTextView = (TextView) findViewById(R.id.timeTextView);
                     latTextView.setText(newCoords.getLatitude()+"");
                     longTextView.setText(newCoords.getLongitude()+"");
                     timeTextView.setText("yay?");
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 974185f... app now logs gps location
+=======
 >>>>>>> parent of 974185f... app now logs gps location
 =======
 >>>>>>> parent of 974185f... app now logs gps location
@@ -149,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     logLocation = true;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                     //change button color
                     Button ioBtn = (Button) findViewById(R.id.ioBtn);
@@ -156,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
 
 
                     locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+=======
+                    timeTextView.setText("clicked");
+>>>>>>> parent of 974185f... app now logs gps location
 =======
                     timeTextView.setText("clicked");
 >>>>>>> parent of 974185f... app now logs gps location
